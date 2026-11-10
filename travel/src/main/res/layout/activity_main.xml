@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F4F5EE" android:padding="20dp">
+ <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PYNEXIA / FIELD NOTES" android:textColor="#246A5B" android:textStyle="bold" android:textSize="12sp" android:letterSpacing="0.1" android:layout_marginTop="8dp"/>
+ <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Go somewhere
+wonderful." android:textColor="#193F36" android:textSize="32sp" android:fontFamily="sans-serif-medium" android:layout_marginTop="12dp"/>
+ <EditText android:id="@+id/destinationSearch" android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="true" android:hint="Search places, countries or highlights" android:padding="12dp" android:background="@drawable/input" android:layout_marginTop="12dp" android:importantForAutofill="no"/>
+ <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:scrollbars="none"><LinearLayout android:id="@+id/categories" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"/></HorizontalScrollView>
+ <TextView android:id="@+id/count" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#5C7067" android:textSize="13sp" android:paddingTop="5dp" android:paddingBottom="8dp"/>
+ <androidx.recyclerview.widget.RecyclerView android:id="@+id/destinations" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:clipToPadding="false" android:paddingBottom="12dp"/>
+ <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Destination facts: Wikipedia · CC BY-SA. Photos: Unsplash." android:textColor="#5C7067" android:textSize="10sp" android:gravity="center"/>
+</LinearLayout>

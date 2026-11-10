@@ -1,0 +1,11 @@
+Native Android Travel App built with Java, XML, RecyclerView, Retrofit and Glide. Browse ten curated destinations and filter by culture, history, nature, coast or city. Search by destination, country or highlight.
+
+Select a card to load a live summary, image and source from the Wikimedia REST API. Open the full Wikipedia guide from the detail screen.
+
+Run the travel module in Android Studio with JDK 17/21 and Android SDK 35 on Android 8.0/API 26 or later. Internet access is needed for live summaries and images.
+
+Build: assembleDebug passed. Automated tests were not run. Lint findings are included in the repository and report.
+
+Guide data uses Wikimedia when available and otherwise shows a curated offline overview; card images are loaded from Unsplash.
+
+Hosted page includes the APK, source archive, report and screenshots.

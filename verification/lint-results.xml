@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.9.1">
+
+    <issue
+        id="OldTargetApi"
+        severity="Warning"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+        category="Correctness"
+        priority="6"
+        summary="Target SDK attribute is not targeting latest version"
+        explanation="When your application or sdk runs on a version of Android that is more recent than your `targetSdkVersion` specifies that it has been tested with, various compatibility modes kick in. This ensures that your application continues to work, but it may look out of place. For example, if the `targetSdkVersion` is less than 14, your app may get an option button in the UI.&#xA;&#xA;To fix this issue, set the `targetSdkVersion` to the highest available value. Then test your app to make sure everything works correctly. You may want to consult the compatibility notes to see what changes apply to each version you are adding support for: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html as well as follow this guide:&#xA;https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        url="https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        urls="https://developer.android.com/distribute/best-practices/develop/target-sdk.html,https://developer.android.com/reference/android/os/Build.VERSION_CODES.html"
+        errorLine1=" defaultConfig { applicationId &apos;com.pynexia.week3.travel&apos;; minSdk 26; targetSdk 35; versionCode 1; versionName &apos;1.0&apos; }"
+        errorLine2="                                                                      ~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\build.gradle"
+            line="3"
+            column="71"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        severity="Warning"
+        message="A newer version of androidx.activity:activity than 1.10.1 is available: 1.13.0"
+        category="Correctness"
+        priority="4"
+        summary="Obsolete Gradle Dependency"
+        explanation="This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+        errorLine1=" implementation &apos;androidx.activity:activity:1.10.1&apos;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\build.gradle"
+            line="7"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        severity="Warning"
+        message="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        category="Security"
+        priority="3"
+        summary="Missing data extraction rules"
+        explanation="Before Android 12, the attributes `android:allowBackup` and `android:fullBackupContent` were used to configure all forms of backup, including cloud backups, device-to-device transfers and adb backup.&#xA;&#xA;In Android 12 and higher, these attributes have been deprecated and will only apply to cloud backups. You should instead use the attribute `android:dataExtractionRules`, specifying an `@xml` resource that configures which files to back up, for cloud backups and for device-to-device transfers, separately. If your `minSdkVersion` supports older versions, you&apos;ll still want to specify an `android:fullBackupContent` resource if the default behavior is not right for your app."
+        url="https://developer.android.com/about/versions/12/backup-restore#xml-changes"
+        urls="https://developer.android.com/about/versions/12/backup-restore#xml-changes,https://goo.gle/DataExtractionRules"
+        errorLine1="&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/>&lt;application android:label=&quot;@string/app_name&quot; android:icon=&quot;@drawable/ic_logo&quot; android:allowBackup=&quot;false&quot; android:supportsRtl=&quot;true&quot; android:theme=&quot;@style/AppTheme&quot;>&lt;activity android:name=&quot;.DestinationActivity&quot; android:exported=&quot;false&quot;/>&lt;activity android:name=&quot;.MainActivity&quot; android:exported=&quot;true&quot; android:windowSoftInputMode=&quot;adjustResize&quot;>&lt;intent-filter>&lt;action android:name=&quot;android.intent.action.MAIN&quot;/>&lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/>&lt;/intent-filter>&lt;/activity>&lt;/application>&lt;/manifest>"
+        errorLine2="                                                                                                                                                                                                                                      ~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\AndroidManifest.xml"
+            line="1"
+            column="231"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        severity="Warning"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        category="Performance"
+        priority="8"
+        summary="Invalidating All RecyclerView Data"
+        explanation="The `RecyclerView` adapter&apos;s `onNotifyDataSetChanged` method does not specify what about the data set has changed, forcing any observers to assume that all existing items and structure may no longer be valid. `LayoutManager`s will be forced to fully rebind and relayout all visible views."
+        errorLine1=" void replace(List&lt;Destination> values){items.clear();items.addAll(values);notifyDataSetChanged();}"
+        errorLine2="                                                                           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\DestinationAdapter.java"
+            line="17"
+            column="76"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        severity="Warning"
+        message="Possible overdraw: Root element paints background `#F4F5EE` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
+        category="Performance"
+        priority="3"
+        summary="Overdraw: Painting regions more than once"
+        explanation="If you set a background drawable on a root view, then you should use a custom theme where the theme background is null. Otherwise, the theme background will be painted first, only to have your custom background completely cover it; this is called &quot;overdraw&quot;.&#xA;&#xA;NOTE: This detector relies on figuring out which layouts are associated with which activities based on scanning the Java code, and it&apos;s currently doing that using an inexact pattern matching algorithm. Therefore, it can incorrectly conclude which activity the layout is associated with and then wrongly complain that a background-theme is hidden.&#xA;&#xA;If you want your custom background on multiple pages, then you should consider making a custom theme with your custom background and just using that theme instead of a root element background.&#xA;&#xA;Of course it&apos;s possible that your custom drawable is translucent and you want it to be mixed with the background. However, you will get better performance if you pre-mix the background with your drawable and use that resulting image or color as a custom theme background instead."
+        errorLine1="&lt;ScrollView xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot; android:fitsSystemWindows=&quot;true&quot; android:background=&quot;#F4F5EE&quot;>&lt;LinearLayout android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;wrap_content&quot; android:orientation=&quot;vertical&quot; android:padding=&quot;20dp&quot;>"
+        errorLine2="                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_destination.xml"
+            line="1"
+            column="178"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        severity="Warning"
+        message="Possible overdraw: Root element paints background `#F4F5EE` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
+        category="Performance"
+        priority="3"
+        summary="Overdraw: Painting regions more than once"
+        explanation="If you set a background drawable on a root view, then you should use a custom theme where the theme background is null. Otherwise, the theme background will be painted first, only to have your custom background completely cover it; this is called &quot;overdraw&quot;.&#xA;&#xA;NOTE: This detector relies on figuring out which layouts are associated with which activities based on scanning the Java code, and it&apos;s currently doing that using an inexact pattern matching algorithm. Therefore, it can incorrectly conclude which activity the layout is associated with and then wrongly complain that a background-theme is hidden.&#xA;&#xA;If you want your custom background on multiple pages, then you should consider making a custom theme with your custom background and just using that theme instead of a root element background.&#xA;&#xA;Of course it&apos;s possible that your custom drawable is translucent and you want it to be mixed with the background. However, you will get better performance if you pre-mix the background with your drawable and use that resulting image or color as a custom theme background instead."
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot; android:orientation=&quot;vertical&quot; android:background=&quot;#F4F5EE&quot; android:padding=&quot;20dp&quot;>"
+        errorLine2="                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="1"
+            column="178"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        severity="Warning"
+        message="This text field does not specify an `inputType`"
+        category="Usability"
+        priority="5"
+        summary="Missing `inputType`"
+        explanation="Providing an `inputType` attribute on a text field improves usability because depending on the data to be input, optimized keyboards can be shown to the user (such as just digits and parentheses for a phone number). &#xA;&#xA;The lint detector also looks at the `id` of the view, and if the id offers a hint of the purpose of the field (for example, the `id` contains the phrase `phone` or `email`), then lint will also ensure that the `inputType` contains the corresponding type attributes.&#xA;&#xA;If you really want to keep the text field generic, you can suppress this warning by setting `inputType=&quot;text&quot;`."
+        errorLine1=" &lt;EditText android:id=&quot;@+id/destinationSearch&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;50dp&quot; android:singleLine=&quot;true&quot; android:hint=&quot;Search places, countries or highlights&quot; android:padding=&quot;12dp&quot; android:background=&quot;@drawable/input&quot; android:layout_marginTop=&quot;12dp&quot; android:importantForAutofill=&quot;no&quot;/>"
+        errorLine2="  ~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="5"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="SmallSp"
+        severity="Warning"
+        message="Avoid using sizes smaller than `11sp`: `10sp`"
+        category="Usability"
+        priority="4"
+        summary="Text size is too small"
+        explanation="Avoid using sizes smaller than 11sp."
+        errorLine1=" &lt;TextView android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;wrap_content&quot; android:text=&quot;Destination facts: Wikipedia · CC BY-SA. Photos: Unsplash.&quot; android:textColor=&quot;#5C7067&quot; android:textSize=&quot;10sp&quot; android:gravity=&quot;center&quot;/>"
+        errorLine2="                                                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="9"
+            column="187"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`&#xA;* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.&#xA;* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.&#xA;* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="https://developer.android.com/guide/topics/resources/localization.html"
+        urls="https://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1=" @Override protected void onCreate(Bundle state){super.onCreate(state);setContentView(R.layout.activity_destination);Intent i=getIntent();String name=i.getStringExtra(&quot;name&quot;),country=i.getStringExtra(&quot;country&quot;);wiki=i.getStringExtra(&quot;wiki&quot;);((TextView)findViewById(R.id.detailName)).setText(name);((TextView)findViewById(R.id.detailCountry)).setText(country+&quot;  ·  &quot;+i.getStringExtra(&quot;category&quot;));((TextView)findViewById(R.id.detailTagline)).setText(i.getStringExtra(&quot;tagline&quot;));Glide.with(this).load(i.getStringExtra(&quot;image&quot;)).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into((ImageView)findViewById(R.id.detailImage));Button open=findViewById(R.id.openGuide);open.setOnClickListener(v->startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(&quot;https://en.wikipedia.org/wiki/&quot;+Uri.encode(wiki.replace(&quot; &quot;,&quot;_&quot;))))));findViewById(R.id.guideProgress).setVisibility(View.VISIBLE);repo.get(new Destination(name,country,&quot;&quot;, &quot;&quot;,wiki,&quot;&quot;),(summary,error)->runOnUiThread(()->{if(isFinishing())return;findViewById(R.id.guideProgress).setVisibility(View.GONE);TextView extract=findViewById(R.id.extract);TextView attribution=findViewById(R.id.attribution);if(summary!=null){extract.setText(summary.extract==null?&quot;Open the source guide for more information.&quot;:summary.extract);attribution.setText(&quot;Wikipedia contributors · CC BY-SA. See the source for details and image attribution.&quot;);if(summary.thumbnail!=null&amp;&amp;summary.thumbnail.source!=null)Glide.with(this).load(summary.thumbnail.source).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into((ImageView)findViewById(R.id.detailImage));}else{extract.setText(DestinationCatalog.offlineGuide(name));attribution.setText(&quot;Curated destination overview. Open Wikipedia for current information. Cover photo: Unsplash.&quot;);}}));}"
+        errorLine2="                                                                                                                                                                                                                                                                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\DestinationActivity.java"
+            line="14"
+            column="351"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`&#xA;* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.&#xA;* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.&#xA;* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="https://developer.android.com/guide/topics/resources/localization.html"
+        urls="https://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1=" @Override protected void onCreate(Bundle state){super.onCreate(state);setContentView(R.layout.activity_destination);Intent i=getIntent();String name=i.getStringExtra(&quot;name&quot;),country=i.getStringExtra(&quot;country&quot;);wiki=i.getStringExtra(&quot;wiki&quot;);((TextView)findViewById(R.id.detailName)).setText(name);((TextView)findViewById(R.id.detailCountry)).setText(country+&quot;  ·  &quot;+i.getStringExtra(&quot;category&quot;));((TextView)findViewById(R.id.detailTagline)).setText(i.getStringExtra(&quot;tagline&quot;));Glide.with(this).load(i.getStringExtra(&quot;image&quot;)).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into((ImageView)findViewById(R.id.detailImage));Button open=findViewById(R.id.openGuide);open.setOnClickListener(v->startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(&quot;https://en.wikipedia.org/wiki/&quot;+Uri.encode(wiki.replace(&quot; &quot;,&quot;_&quot;))))));findViewById(R.id.guideProgress).setVisibility(View.VISIBLE);repo.get(new Destination(name,country,&quot;&quot;, &quot;&quot;,wiki,&quot;&quot;),(summary,error)->runOnUiThread(()->{if(isFinishing())return;findViewById(R.id.guideProgress).setVisibility(View.GONE);TextView extract=findViewById(R.id.extract);TextView attribution=findViewById(R.id.attribution);if(summary!=null){extract.setText(summary.extract==null?&quot;Open the source guide for more information.&quot;:summary.extract);attribution.setText(&quot;Wikipedia contributors · CC BY-SA. See the source for details and image attribution.&quot;);if(summary.thumbnail!=null&amp;&amp;summary.thumbnail.source!=null)Glide.with(this).load(summary.thumbnail.source).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into((ImageView)findViewById(R.id.detailImage));}else{extract.setText(DestinationCatalog.offlineGuide(name));attribution.setText(&quot;Curated destination overview. Open Wikipedia for current information. Cover photo: Unsplash.&quot;);}}));}"
+        errorLine2="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\DestinationActivity.java"
+            line="14"
+            column="1302"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`&#xA;* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.&#xA;* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.&#xA;* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="https://developer.android.com/guide/topics/resources/localization.html"
+        urls="https://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1=" @Override protected void onCreate(Bundle state){super.onCreate(state);setContentView(R.layout.activity_destination);Intent i=getIntent();String name=i.getStringExtra(&quot;name&quot;),country=i.getStringExtra(&quot;country&quot;);wiki=i.getStringExtra(&quot;wiki&quot;);((TextView)findViewById(R.id.detailName)).setText(name);((TextView)findViewById(R.id.detailCountry)).setText(country+&quot;  ·  &quot;+i.getStringExtra(&quot;category&quot;));((TextView)findViewById(R.id.detailTagline)).setText(i.getStringExtra(&quot;tagline&quot;));Glide.with(this).load(i.getStringExtra(&quot;image&quot;)).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into((ImageView)findViewById(R.id.detailImage));Button open=findViewById(R.id.openGuide);open.setOnClickListener(v->startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(&quot;https://en.wikipedia.org/wiki/&quot;+Uri.encode(wiki.replace(&quot; &quot;,&quot;_&quot;))))));findViewById(R.id.guideProgress).setVisibility(View.VISIBLE);repo.get(new Destination(name,country,&quot;&quot;, &quot;&quot;,wiki,&quot;&quot;),(summary,error)->runOnUiThread(()->{if(isFinishing())return;findViewById(R.id.guideProgress).setVisibility(View.GONE);TextView extract=findViewById(R.id.extract);TextView attribution=findViewById(R.id.attribution);if(summary!=null){extract.setText(summary.extract==null?&quot;Open the source guide for more information.&quot;:summary.extract);attribution.setText(&quot;Wikipedia contributors · CC BY-SA. See the source for details and image attribution.&quot;);if(summary.thumbnail!=null&amp;&amp;summary.thumbnail.source!=null)Glide.with(this).load(summary.thumbnail.source).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into((ImageView)findViewById(R.id.detailImage));}else{extract.setText(DestinationCatalog.offlineGuide(name));attribution.setText(&quot;Curated destination overview. Open Wikipedia for current information. Cover photo: Unsplash.&quot;);}}));}"
+        errorLine2="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\DestinationActivity.java"
+            line="14"
+            column="1691"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`&#xA;* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.&#xA;* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.&#xA;* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="https://developer.android.com/guide/topics/resources/localization.html"
+        urls="https://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1=" @Override public void onBindViewHolder(@NonNull Holder h,int pos){Destination d=items.get(pos);h.name.setText(d.name);h.country.setText(d.country+&quot;  ·  &quot;+d.category);h.tagline.setText(d.tagline);Glide.with(h.image).load(d.image).centerCrop().placeholder(R.drawable.card).error(R.drawable.card).into(h.image);h.itemView.setOnClickListener(v->listener.open(d));}"
+        errorLine2="                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\DestinationAdapter.java"
+            line="19"
+            column="138"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`&#xA;* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.&#xA;* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.&#xA;* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="https://developer.android.com/guide/topics/resources/localization.html"
+        urls="https://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1=" private void filter(){String q=search.getText().toString().trim().toLowerCase(Locale.ROOT);List&lt;Destination> matches=new ArrayList&lt;>();for(Destination d:all)if((category.equals(&quot;All&quot;)||d.category.equals(category))&amp;&amp;(d.name+&quot; &quot;+d.country+&quot; &quot;+d.tagline).toLowerCase(Locale.ROOT).contains(q))matches.add(d);adapter.replace(matches);count.setText(matches.size()+&quot; destinations · select a card for the live guide&quot;);}"
+        errorLine2="                                                                                                                                                                                                                                                                                                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\MainActivity.java"
+            line="20"
+            column="345"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`&#xA;* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.&#xA;* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.&#xA;* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="https://developer.android.com/guide/topics/resources/localization.html"
+        urls="https://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1=" private void filter(){String q=search.getText().toString().trim().toLowerCase(Locale.ROOT);List&lt;Destination> matches=new ArrayList&lt;>();for(Destination d:all)if((category.equals(&quot;All&quot;)||d.category.equals(category))&amp;&amp;(d.name+&quot; &quot;+d.country+&quot; &quot;+d.tagline).toLowerCase(Locale.ROOT).contains(q))matches.add(d);adapter.replace(matches);count.setText(matches.size()+&quot; destinations · select a card for the live guide&quot;);}"
+        errorLine2="                                                                                                                                                                                                                                                                                                                                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\java\com\pynexia\week3\travel\MainActivity.java"
+            line="20"
+            column="360"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;DESTINATION GUIDE&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text=&quot;DESTINATION GUIDE&quot; android:textColor=&quot;#246A5B&quot; android:textStyle=&quot;bold&quot; android:textSize=&quot;12sp&quot; android:layout_marginTop=&quot;16dp&quot;/>"
+        errorLine2="                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_destination.xml"
+            line="2"
+            column="85"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Destination cover photo&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;ImageView android:id=&quot;@+id/detailImage&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;240dp&quot; android:scaleType=&quot;centerCrop&quot; android:contentDescription=&quot;Destination cover photo&quot; android:layout_marginTop=&quot;14dp&quot;/>"
+        errorLine2="                                                                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_destination.xml"
+            line="3"
+            column="140"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Loading the live destination guide…&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;TextView android:id=&quot;@+id/extract&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;wrap_content&quot; android:text=&quot;Loading the live destination guide…&quot; android:textColor=&quot;#193F36&quot; android:textSize=&quot;16sp&quot; android:lineSpacingExtra=&quot;4dp&quot; android:layout_marginTop=&quot;12dp&quot;/>"
+        errorLine2="                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_destination.xml"
+            line="8"
+            column="111"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Open full travel guide&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;Button android:id=&quot;@+id/openGuide&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;52dp&quot; android:text=&quot;Open full travel guide&quot; android:textAllCaps=&quot;false&quot; android:backgroundTint=&quot;#246A5B&quot; android:textColor=&quot;#FFFFFF&quot; android:layout_marginTop=&quot;15dp&quot; android:layout_marginBottom=&quot;14dp&quot;/>"
+        errorLine2="                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_destination.xml"
+            line="10"
+            column="103"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;PYNEXIA / FIELD NOTES&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text=&quot;PYNEXIA / FIELD NOTES&quot; android:textColor=&quot;#246A5B&quot; android:textStyle=&quot;bold&quot; android:textSize=&quot;12sp&quot; android:letterSpacing=&quot;0.1&quot; android:layout_marginTop=&quot;8dp&quot;/>"
+        errorLine2="                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="2"
+            column="85"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Go somewhere wonderful.&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;TextView android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;wrap_content&quot; android:text=&quot;Go somewhere"
+        errorLine2="                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="3"
+            column="85"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Search places, countries or highlights&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;EditText android:id=&quot;@+id/destinationSearch&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;50dp&quot; android:singleLine=&quot;true&quot; android:hint=&quot;Search places, countries or highlights&quot; android:padding=&quot;12dp&quot; android:background=&quot;@drawable/input&quot; android:layout_marginTop=&quot;12dp&quot; android:importantForAutofill=&quot;no&quot;/>"
+        errorLine2="                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="5"
+            column="139"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Destination facts: Wikipedia · CC BY-SA. Photos: Unsplash.&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;TextView android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;wrap_content&quot; android:text=&quot;Destination facts: Wikipedia · CC BY-SA. Photos: Unsplash.&quot; android:textColor=&quot;#5C7067&quot; android:textSize=&quot;10sp&quot; android:gravity=&quot;center&quot;/>"
+        errorLine2="                                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\activity_main.xml"
+            line="9"
+            column="85"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;Destination photo&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1=" &lt;ImageView android:id=&quot;@+id/placeImage&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;174dp&quot; android:scaleType=&quot;centerCrop&quot; android:contentDescription=&quot;Destination photo&quot;/>"
+        errorLine2="                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\Random Projects\Pynexia\week-3\travel\src\main\res\layout\row_destination.xml"
+            line="2"
+            column="139"/>
+    </issue>
+
+</issues>
