@@ -4,7 +4,7 @@ Explore curated destinations by search and category, view photo cards and load a
 
 Pynexia Android Development / Week 3.
 
-[Hosted showcase](https://engeyad.github.io/pynexia-week3-travel/) · [PDF report](https://github.com/ENGEyad/pynexia-week3-travel/releases/latest/download/Travel-App-Report.pdf) · [APK](https://github.com/ENGEyad/pynexia-week3-travel/releases/latest/download/Travel-App.apk) · [Source ZIP](https://github.com/ENGEyad/pynexia-week3-travel/releases/latest/download/Travel-App.zip)
+[Hosted showcase](https://engeyad.github.io/pynexia-week3-travel/) · [PDF report](https://github.com/ENGEyad/pynexia-week3-travel/releases/latest/download/Travel-App-Report.pdf) · [APK](https://github.com/ENGEyad/pynexia-week3-travel/releases/latest/download/travel-debug.apk) · [Source ZIP](https://github.com/ENGEyad/pynexia-week3-travel/releases/latest/download/Travel-App.zip)
 
 ## Implementation
 
